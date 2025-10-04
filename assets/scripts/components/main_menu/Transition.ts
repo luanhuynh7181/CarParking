@@ -30,7 +30,7 @@ export class Transition {
         opacity.opacity = 0;
 
         tween(node)
-            .to(duration, { position: node.orgPos }, { easing: "backIn" })
+            .to(duration, { position: node.orgPos }, { easing: "backOut" })
             .start();
 
         tween(opacity).to(duration, { opacity: 255 }).start();

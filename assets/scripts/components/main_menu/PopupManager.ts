@@ -22,6 +22,11 @@ export class PopupManager extends Component {
     @property(Node)
     private btnBack: Node = null!;
 
+
+    @property(Node)
+    private nodeLobby: Node = null!;
+
+
     private currentPopup: Node | null = null;
     start() {
         this.btnBack.active = false;
@@ -43,34 +48,17 @@ export class PopupManager extends Component {
     onShowPopup(popup: Node) {
         this.currentPopup = popup;
         popup.active = true;
+        Transition.runOut(this.nodeLobby, new Vec3(0, 0, 0), 0.2);
         Transition.runIn(this.btnBack, new Vec3(-100, 0, 0));
         Transition.runIn(popup, new Vec3(0, 200, 0));
-        const imgFog = this.nodePopups.getChildByName("btn_fog");
-        if (imgFog) {
-            imgFog.active = true;
-            let opacity = imgFog.getComponent(UIOpacity);
-            opacity.opacity = 0;
-            tween(opacity)
-                .to(0.2, { opacity: 100 })
-                .start();
-        }
     }
 
     onClickBack() {
         Transition.runOut(this.btnBack, new Vec3(-100, 0, 0));
-        const imgFog = this.nodePopups.getChildByName("btn_fog");
-        if (imgFog) {
-            const opacity = imgFog.getComponent(UIOpacity);
-            tween(opacity)
-                .to(0.2, { opacity: 0 })
-                .call(() => {
-                    imgFog.active = false;
-                })
-                .start();
-        }
         if (this.currentPopup) {
             Transition.runOut(this.currentPopup, new Vec3(0, 200, 0), 0.5);
         }
+        Transition.runIn(this.nodeLobby, new Vec3(0, 0, 0), 0.5);
     }
 
     onClickSetting() {
