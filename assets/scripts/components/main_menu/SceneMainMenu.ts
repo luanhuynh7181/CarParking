@@ -1,19 +1,33 @@
-import { _decorator, Component, Node, Vec2 } from 'cc';
+import { _decorator, Component, instantiate, Node, Prefab, Vec2 } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('SceneMainMenu')
 export class SceneMainMenu extends Component {
-    //  node parallax background
+    @property(Prefab)
+    popupSettingPrefab: Prefab = null!;
+    private popupInstance: Node | null = null;
     @property(Node)
-    private bgParallax: Node = null;
-    private moveDir: Vec2 = new Vec2(-0.2, -1);
+    private nodePopups: Node = null!;
     start() {
 
     }
 
-    update(deltaTime: number) {
-
+    onClickLeaderboard() {
     }
+
+    onClickSetting() {
+        console.log(":popupsetting")
+        if (!this.popupInstance) {
+            this.popupInstance = instantiate(this.popupSettingPrefab);
+            console.log(this.popupInstance);
+            this.nodePopups.addChild(this.popupInstance);
+            this.popupInstance.setPosition(0, 0, 0);
+        } else {
+            this.popupInstance.active = true;
+        }
+        console.log("onClickSetting");
+    }
+
 }
 
 
