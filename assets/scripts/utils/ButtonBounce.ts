@@ -1,4 +1,5 @@
 import { _decorator, Button, Component, Node, Tween, tween, v3, Vec3 } from 'cc';
+import { AudioManager } from '../managers/AudioManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('ButtonBounce')
@@ -9,7 +10,8 @@ export class ButtonBounce extends Component {
     start() {
         this.node.on(Node.EventType.MOUSE_ENTER, this.onMouseEnter, this);
         this.node.on(Node.EventType.MOUSE_LEAVE, this.onMouseCancel, this);
-        this.node.on(Node.EventType.TOUCH_START, this.onTouchEnd, this);
+
+        this.node.on(Node.EventType.TOUCH_END, this.onTouchEnd, this);
         this.scaleOrg = this.node.scale.x;
         this.scaleTo = this.scaleOrg * 1.1;
     }
@@ -29,8 +31,10 @@ export class ButtonBounce extends Component {
     }
 
     onTouchEnd() {
-        // BackgroundSound.instance.playClickButton();
+        AudioManager.instance.playSound('button_press');
     }
+
+
 }
 
 

@@ -1,5 +1,5 @@
 import { _decorator, Component, instantiate, Node, Prefab, Size, tween, UIOpacity, Vec3, view } from 'cc';
-import { Transition } from './Transition';
+import { Transition } from '../../utils/Transition';
 const { ccclass, property } = _decorator;
 
 @ccclass('PopupManager')
