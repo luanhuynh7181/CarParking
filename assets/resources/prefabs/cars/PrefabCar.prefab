@@ -1107,7 +1107,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "22",
+    "_name": "sprCarView",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": {
@@ -1255,8 +1255,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 50,
-      "height": 100
+      "width": 20,
+      "height": 40
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",

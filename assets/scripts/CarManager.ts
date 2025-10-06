@@ -1,11 +1,13 @@
-import { _decorator, Component, instantiate, Node, Prefab, randomRangeInt, resources, Vec3 } from 'cc';
+import { _decorator, Component, instantiate, Node, Prefab, randomRange, randomRangeInt, resources, Vec3 } from 'cc';
 import { GameManager } from './GameManager';
 import { Car } from './Car';
+import { CarType } from './cars/CarType';
 const { ccclass, property } = _decorator;
 
 @ccclass('CarManager')
 export class CarManager extends Component {
     prefabCar: Prefab = null;
+    prefabCars: Map<string, Prefab> = new Map();
     cars: Car[] = [];
     pool: Car[] = [];
     numCarsGen: number = 2;
@@ -16,9 +18,17 @@ export class CarManager extends Component {
     }
 
     loadResources() {
+        resources.loadDir("prefabs/cars", Prefab, (err: Error, data) => {
+            console.log("SADV");
+            for (let prefab of data) {
+                this.prefabCars[prefab.name] = prefab;
+            }
+            this.onFinishLoadResources();
+        });
+
         resources.load("prefabs/PrefabCar", (err: Error, data: Prefab) => {
             this.prefabCar = data;
-            this.onFinishLoadResources();
+            // this.onFinishLoadResources();
         });
     }
 
@@ -46,7 +56,7 @@ export class CarManager extends Component {
     }
 
     update(deltaTime: number) {
-        
+
     }
 
     pushToPool(car: Car) {
@@ -54,26 +64,48 @@ export class CarManager extends Component {
         this.pool.push(car);
     }
 
-    getNewCar(): Car {
+    getNewCar(carType: CarType = CarType.SUV): Car {
         // if (this.pool.length > 0) {
         //     return this.pool.pop();
         // }
-        return instantiate(this.prefabCar).getComponent(Car);
+        console.log("New Car: ", carType);
+        let prefab = this.prefabCars["PrefabCar"];
+        switch (carType) {
+            case CarType.SUV:
+                prefab = this.prefabCars["PrefabCar"];
+                break;
+            case CarType.PICKUP_TRUCK:
+                prefab = this.prefabCars["PrefabPickupTruck"];
+                break;
+            case CarType.TAXI:
+                prefab = this.prefabCars["PrefabTaxi"];
+                break;
+                
+            case CarType.SEDAN:
+                prefab = this.prefabCars["PrefabSedan"];
+                break;
+                
+            case CarType.MICRO:
+                prefab = this.prefabCars["PrefabMicro"];
+                break;
+        }
+        return instantiate(prefab).getComponent(Car);
     }
 
     genNewWave() {
         console.log("Gen new wave");
-        let summonPos = [new Vec3(915,25,0), new Vec3(1255,50,0)];
+        let summonPos = [new Vec3(915, 25, 0), new Vec3(1150, 25, 0), new Vec3(246, 25, 0), new Vec3(430, 25, 0)];
         for (let i = 0; i < this.numCarsGen; ++i) {
-            let car = this.getNewCar();
+            let carType = randomRangeInt(0,CarType.MICRO + 1);
+            let car = this.getNewCar(carType);
             car.reset();
-            car.node.position = summonPos[randomRangeInt(0,summonPos.length)];
+            car.node.position = summonPos[randomRangeInt(0, summonPos.length)];
             car.node.angle = 90;
             setTimeout(() => {
                 this.node.addChild(car.node);
                 car.readyToStart();
                 this.cars.push(car);
-            }, randomRangeInt(1000,12000));
+            }, randomRangeInt(1000, 12000));
         }
         this.timeGen++;
         if (this.timeGen % 4 == 0) {
@@ -85,7 +117,7 @@ export class CarManager extends Component {
     timeOutGenNewWave() {
         setTimeout(() => {
             this.genNewWave();
-        }, randomRangeInt(22000,30000));
+        }, randomRangeInt(22000, 30000));
     }
 
     clearCars() {

@@ -13,6 +13,7 @@ export class ParkingLotManager extends Component {
         GameManager.getInstance().setParkingLotManager(this);
         this.loadResources();
         this.gateOuts.push(this.node.getChildByName("NodeGateOut").getComponent(GateOut));
+        this.gateOuts.push(this.node.getChildByName("NodeGateOut1").getComponent(GateOut));
     }
 
     loadResources() {

@@ -68,10 +68,11 @@ export class SceneGame extends Component {
 
             this.midPoint = new Vec3(touchPoint1.x/2 + touchPoint2.x / 2, touchPoint1.y / 2 + touchPoint2.y /2 , 0);
 
+            this.isPinching = true;
+            this.baseDistance = Vec2.distance(touchPoint1,touchPoint2);
+
             // DEBUG
             // this.getNodeMidPoint().position = this.midPoint;
-            // this.isPinching = true;
-            // this.baseDistance = Vec2.distance(touchPoint1,touchPoint2);
             // const graphics = this.getNodeBaseDistance().getComponent(Graphics);
             // graphics.clear();
             // graphics.moveTo(touchPoint1.x, touchPoint1.y)

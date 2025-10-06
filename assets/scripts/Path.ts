@@ -1,6 +1,7 @@
 import { _decorator, Color, Component, EventTouch, Game, Graphics, Input, Mat4, Node, Sprite, UITransform, Vec2, Vec3, view } from 'cc';
 import { ParkingLotManager } from './ParkingLotManager';
 import { GameManager } from './GameManager';
+import { Car } from './Car';
 const { ccclass, property } = _decorator;
 
 @ccclass('Path')
@@ -17,6 +18,7 @@ export class Path extends Component {
     _isDrawing: boolean = false;
 
     _deltaX: number = 0;
+    _car: Car;
 
     onLoad(): void {
         this.sprHead = this.node.getChildByName("sprHead").getComponent(Sprite);
@@ -82,11 +84,6 @@ export class Path extends Component {
         this.graphics.lineWidth = 5;
         this.graphics.moveTo(startPos.x, startPos.y);
         event.propagationStopped = true;
-        const target = event.target as Node;
-        console.log("STAT: ", this.sprHead.node.getPosition(), this.sprHead.node.getWorldPosition(), this.node.position, this.node.getWorldPosition());
-        console.log("STAT TARGET: ", target.getPosition(), target.getWorldPosition());
-        console.log("TOUCH STAT: ", event.getUILocation(), event.getLocation(), event.getLocationInView());
-        console.log("getCameraAnchorPosition: ", GameManager.getInstance().sceneGame.getCameraAnchorDelta());
     }
 
     onTouchMove(event: EventTouch) {
@@ -101,7 +98,6 @@ export class Path extends Component {
         currentPos.x += this._deltaX * GameManager.getInstance().sceneGame.getCameraHeightRatio();
         // currentPos = event.getLocationInView();
 
-        console.log("TOUCH MOVE: ", event.getUILocation(), event.getLocation(), event.getLocationInView());
         if (this.positions.length === 0) {
             this.positions.push(currentPos);
                 this.sprHead.node.position = currentPos.toVec3();
@@ -119,6 +115,9 @@ export class Path extends Component {
 
         if (!this._isGettingOut) {
             parkingLots.forEach(parkingLot => {
+                if (this._car.getCarType() !== parkingLot.getCarType()) {
+                    return;
+                }
                 // return;
                 let rectEntry = parkingLot.node.getChildByName("sprEntry").getComponent(UITransform).getBoundingBoxToWorld();
                 rectEntry.x += this._deltaX;
@@ -214,6 +213,8 @@ export class Path extends Component {
             this._isMatchPark = false;
         }
     }
+
+    setCar(c: Car) {
+        this._car = c;
+    }
 }
-
-

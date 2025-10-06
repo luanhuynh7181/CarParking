@@ -1,0 +1,13 @@
+{
+  "ver": "1.1.50",
+  "importer": "prefab",
+  "imported": true,
+  "uuid": "6fe3dcf5-3609-4ca3-ac9d-acc7733bc82a",
+  "files": [
+    ".json"
+  ],
+  "subMetas": {},
+  "userData": {
+    "syncNodeName": "PrefabParkingSlotMicro"
+  }
+}

@@ -2,6 +2,7 @@ import { js, _decorator, Button, Component, EventHandler, lerp, Node, random, ra
 import { Path } from './Path';
 import { PathManager } from './PathManager';
 import { GameManager } from './GameManager';
+import { CarType } from './cars/CarType';
 const { IDGenerator } = js;
 const { ccclass, property } = _decorator;
 
@@ -37,6 +38,7 @@ export class Car extends Component {
 
     _state: CarState = CarState.UNDEFINED;
     _timeParking: number;
+    _type: CarType = CarType.SUV;
     
 
     onLoad(): void {
@@ -51,6 +53,7 @@ export class Car extends Component {
         this.sprCar = this.node.getChildByName("sprCar").getComponent(Sprite);  
 
         this.path = GameManager.getInstance().getPathManager().getPath();
+        this.path.setCar(this);
 
         this._carId = IDGenerator.global.getNewId();
 
@@ -91,42 +94,21 @@ export class Car extends Component {
         let startPos = event.getUILocation();
         this.path.onTouchStart(event);
         event.propagationStopped = true;
-        // this.path.length = 0;
-        // this.path.push(startPos);
-        // this.graphics.clear();
-        // this.graphics.strokeColor = Color.WHITE;
-        // this.graphics.lineWidth = 5;
-        // this.graphics.moveTo(startPos.x - this.node.x, startPos.y - this.node.y - this.node.getComponent(UITransform).height / 2);
     }
 
     onTouchMove(event: EventTouch) {
         this.path.onTouchMove(event);
         event.propagationStopped = true;
-        // const minDelta = 5;
-        // let lastPath = this.path[this.path.length - 1];
-        // let currentPos = event.getUILocation();
-        // if (Math.abs(currentPos.x - lastPath.x) > minDelta || Math.abs(currentPos.y - lastPath.y) > minDelta) {
-
-        //     console.log("Move pos: ", currentPos);
-        //     this.path.push(currentPos);
-        //     this.graphics.lineTo(currentPos.x - this.node.x, currentPos.y - this.node.y - this.node.getComponent(UITransform).height / 2);
-        // }
-        // this.graphics.stroke();
     }
 
     onTouchEnd(event: EventTouch) {
         this.path.onTouchEnd(event);
         event.propagationStopped = true;
-        // console.log("End pos: ", event.getUILocation());
-        // this.path.push(event.getUILocation());
-        // console.log("Current path: ", this.path);
     }
 
     onTouchCancel(event: EventTouch) {
         this.path.onTouchCancel(event);
         event.propagationStopped = true;
-        // console.log("Cancel pos: ", event.getUILocation());
-        // console.log("Current path: ", this.path);
     }
 
     start() {
@@ -183,41 +165,6 @@ export class Car extends Component {
         // this.node.angle = this.angle;
         // console.log("Hittt: ", this.node.angle - this.angle,this.node.angle, this.angle);
     }
-
-    // moveWithPath(deltaTime: number) {
-    //     let s = deltaTime * this.getSpeed();
-    //     let move = 0;
-    //     let moveIndex = -1;
-    //     let positions = this.path.getPositions();
-    //     while (move < s) {
-    //         if (moveIndex < positions.length - 1) {
-    //             moveIndex++;
-    //             if (moveIndex === 0) {
-    //                 move += Vec2.distance(this.node.position.toVec2(), positions[moveIndex]);
-    //             } else {
-    //                 move += Vec2.distance(positions[moveIndex], positions[moveIndex-1]);
-    //             }
-    //         }
-    //         else {
-    //             break;
-    //         }
-    //     }
-    //     console.log("Move to: ", moveIndex, positions[moveIndex], positions);
-    //     console.log("Move: ", move, "S: ", s);
-    //     let moveVector = new Vec2(positions[moveIndex].x - this.node.position.x, positions[moveIndex].y - this.node.position.y);
-    //     this.angle = Math.atan(moveVector.y/moveVector.x) * 180 / Math.PI - 90 + (moveVector.x <0?-180:0);
-
-    //     this.node.x = positions[moveIndex].x;
-    //     this.node.y = positions[moveIndex].y;
-    //     this.sprCar.node.angle = lerp(this.sprCar.node.angle,this.angle,0.4);
-    //     let target = new Vec2()
-    //     if (s < move) {
-    //         console.log("Move: ", move, "S: ", s, "moveIndex: ", moveIndex);
-    //         this.path.slicePositions(moveIndex+1);
-    //     } else {
-            
-    //     }
-    // }
 
     getSpeed(): number {
         if (this._isReverse) {
@@ -396,5 +343,9 @@ export class Car extends Component {
                 this.rigidBody.enabledContactListener = true;
         })
         .start();
+    }
+
+    getCarType() {
+        return this._type;
     }
 }

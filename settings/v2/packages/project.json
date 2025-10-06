@@ -7,5 +7,22 @@
       "fitHeight": true,
       "fitWidth": false
     }
+  },
+  "physics": {
+    "collisionGroups": [
+      {
+        "index": 1,
+        "name": "CAR"
+      },
+      {
+        "index": 2,
+        "name": "GROUND"
+      }
+    ],
+    "collisionMatrix": {
+      "0": 1,
+      "1": 6,
+      "2": 2
+    }
   }
 }
