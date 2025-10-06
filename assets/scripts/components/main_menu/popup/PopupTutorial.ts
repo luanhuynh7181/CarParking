@@ -1,4 +1,5 @@
 import { _decorator, Button, Component, Node, PageView, Size, UITransform, Vec3, view } from 'cc';
+import { GameConst } from '../../../GameConst';
 const { ccclass, property } = _decorator;
 
 @ccclass('PopupTutorial')
@@ -19,13 +20,19 @@ export class PopupTutorial extends Component {
     onLoad() {
         this.pageView.node.on('page-turning', this.onPageTurned, this);
         this.btnPrev.node.active = false;
-        this.onScreenResize(view.getVisibleSize(), view.getVisibleSize());
     }
 
-    onScreenResize(designResolution: Size, screenResolution: Size) {
-        this.bgTutorial.setContentSize(screenResolution.width, this.bgTutorial.height);
-        this.btnPrev.node.setPosition(new Vec3(-screenResolution.width / 2 + 65, this.btnPrev.node.position.y));
-        this.btnNext.node.setPosition(new Vec3(screenResolution.width / 2 - 65, this.btnNext.node.position.y));
+    start() {
+        this.onScreenResize();
+    }
+
+    onScreenResize() {
+        const viewSize = view.getVisibleSize();
+        this.bgTutorial.setContentSize(viewSize.width, this.bgTutorial.height);
+        this.btnPrev.node.setPosition(new Vec3(-viewSize.width / 2 + 65, this.btnPrev.node.position.y));
+        this.btnNext.node.setPosition(new Vec3(viewSize.width / 2 - 65, this.btnNext.node.position.y));
+        const scale = viewSize.width / view.getDesignResolutionSize().width;
+        this.pageView.node.setScale(scale, scale);
     }
 
 

@@ -29,7 +29,7 @@ export class PopupLeaderboard extends Component {
         }
     }
 
-    onScreenResize(designResolution: Size, screenResolution: Size) {
+    onScreenResize(viewSize: Size) {
     }
 }
 

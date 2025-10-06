@@ -18,7 +18,7 @@ export class PopupSetting extends Component {
         this.updateStatus(this.btnSound, AudioManager.instance.isSoundOn);
     }
 
-    onScreenResize(designResolution: Size, screenResolution: Size) {
+    onScreenResize(viewSize: Size) {
     }
 
     updateStatus(btn: Node, isOn: boolean) {
