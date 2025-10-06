@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Vec3 } from 'cc';
+import { _decorator, Component, director, Node, Vec3 } from 'cc';
 import { Transition } from '../../utils/Transition';
 const { ccclass, property } = _decorator;
 
@@ -20,6 +20,7 @@ export class SceneMainMenu extends Component {
     }
 
     onClickChooseMap(event: Event, mapIndex: string) {
+        director.loadScene("SceneGame");
     }
 
 }
