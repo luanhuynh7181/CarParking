@@ -1,5 +1,6 @@
-import { _decorator, Component, Node, Vec3 } from 'cc';
+import { _decorator, Component, Node, ResolutionPolicy, Size, Vec3, view } from 'cc';
 import { Transition } from '../../utils/Transition';
+import { PopupManager } from './PopupManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('SceneMainMenu')
@@ -12,6 +13,24 @@ export class SceneMainMenu extends Component {
 
     @property(Node)
     nodeIcon: Node = null!;
+
+    @property(PopupManager)
+    popupManager: PopupManager = null!;
+
+    onLoad() {
+        window.addEventListener('resize', this.onResize.bind(this));
+        // this.onResize();
+    }
+
+    onResize() {
+        // view.setCanvasSize(window.innerWidth, window.innerHeight);
+        // const designSize = view.getDesignResolutionSize();
+        // view.setDesignResolutionSize(window.innerWidth, window.innerHeight, ResolutionPolicy.FIXED_HEIGHT);
+        // console.log('onResize', window.innerWidth, window.innerHeight);
+        // const designSize = new Size(1280, 720);
+        // const viewSize = view.getVisibleSize();
+        // this.popupManager.onScreenResize(designSize, viewSize);
+    }
 
     start() {
         Transition.runIn(this.nodeGameName, new Vec3(0, 100, 0), 0.3);

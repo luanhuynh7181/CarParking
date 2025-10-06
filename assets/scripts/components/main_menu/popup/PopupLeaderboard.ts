@@ -1,4 +1,4 @@
-import { _decorator, Component, instantiate, Label, Node, Prefab } from 'cc';
+import { _decorator, Component, instantiate, Label, Node, Prefab, Size } from 'cc';
 import { ItemLeaderboard } from '../ItemLeaderboard';
 const { ccclass, property } = _decorator;
 
@@ -27,6 +27,9 @@ export class PopupLeaderboard extends Component {
             itemScript.setData(i, 'Player ' + (i + 1), i * 100, 'https://avatar.iran.liara.run/public/44');
             this.nodeContent.addChild(item);
         }
+    }
+
+    onScreenResize(designResolution: Size, screenResolution: Size) {
     }
 }
 

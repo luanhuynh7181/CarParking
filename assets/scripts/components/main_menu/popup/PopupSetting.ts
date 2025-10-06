@@ -1,4 +1,4 @@
-import { _decorator, Component, Label, Node, Sprite } from 'cc';
+import { _decorator, Component, Label, Node, Size, Sprite, Vec3 } from 'cc';
 import { AudioManager } from '../../../managers/AudioManager';
 const { ccclass, property } = _decorator;
 
@@ -16,6 +16,9 @@ export class PopupSetting extends Component {
     start() {
         this.updateStatus(this.btnMusic, AudioManager.instance.isMusicOn);
         this.updateStatus(this.btnSound, AudioManager.instance.isSoundOn);
+    }
+
+    onScreenResize(designResolution: Size, screenResolution: Size) {
     }
 
     updateStatus(btn: Node, isOn: boolean) {

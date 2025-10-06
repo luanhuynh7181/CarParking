@@ -1,5 +1,6 @@
 import { _decorator, Component, instantiate, Node, Prefab, Size, tween, UIOpacity, Vec3, view } from 'cc';
 import { Transition } from '../../utils/Transition';
+import { PopupSetting } from './popup/PopupSetting';
 const { ccclass, property } = _decorator;
 
 @ccclass('PopupManager')
@@ -28,15 +29,27 @@ export class PopupManager extends Component {
 
 
     private currentPopup: Node | null = null;
+
+
     start() {
         this.btnBack.active = false;
-        Transition.updateOrgPos(this.btnBack);
     }
 
 
     onScreenResize(designResolution: Size, screenResolution: Size) {
+        this.btnBack.setPosition(new Vec3(-screenResolution.width / 2 + 60, screenResolution.height / 2 - 30));
         Transition.updateOrgPos(this.btnBack);
+        if (this.nodePopupSetting) {
+            this.nodePopupSetting.getComponent(PopupSetting).onScreenResize(designResolution, screenResolution);
+        }
+        if (this.nodePopupLeaderboard) {
+            this.nodePopupLeaderboard.getComponent(PopupLeaderboard).onScreenResize(designResolution, screenResolution);
+        }
+        if (this.nodePopupTutorial) {
+            this.nodePopupTutorial.getComponent(PopupTutorial).onScreenResize(designResolution, screenResolution);
+        }
     }
+
 
     hideCurrentPopup() {
         if (this.currentPopup) {
